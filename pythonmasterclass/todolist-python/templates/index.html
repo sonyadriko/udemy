@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <form method="POST">
+        <input type="text" name="task" placeholder="Add a new task" required>
+        <button type="submit">Add</button>
+    </form>    
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <form action="{{ url_for('toggle_task', task_id=task.id) }}" method="POST" style="display: inline;">
+                    <button type="submit" style="border: none; background: none;">{{ "✔" if task.done else "✖" }}</button>
+                </form>
+                <span style="text-decoration: {{ 'line-through' if task.done else 'none' }};">
+                    {{ task.name }}
+                </span>
+                <a href="{{ url_for('delete_task', task_id=task.id) }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
